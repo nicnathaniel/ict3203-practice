@@ -24,7 +24,9 @@ pipeline {
                 }
             }
             steps {
-                sh 'npm test'
+                dir('jenkins-data/simple_app'){
+                    sh 'npm test'
+                }
             }
         }
 
