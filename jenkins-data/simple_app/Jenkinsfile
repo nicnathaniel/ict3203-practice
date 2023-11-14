@@ -9,7 +9,10 @@ pipeline {
                 }
             }
             steps {
-                sh 'npm install' 
+                dir('jenkins-data/simple_app'){
+                    sh 'npm install' 
+                }
+                
             }
         }
 
