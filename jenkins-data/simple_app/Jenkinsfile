@@ -56,7 +56,7 @@ pipeline {
     post {
 		success {
             
-			dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+			dependencyCheckPublisher pattern: 'jenkins-data/simple_app/dependency-check-report.xml'
             
 		}
 	}
