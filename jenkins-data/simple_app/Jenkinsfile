@@ -46,7 +46,7 @@ pipeline {
         stage('OWASP DependencyCheck') {
             agent any
 			steps {
-				dir('jenkins-data/JemkinsDependencyCheckTest'){
+				dir('jenkins-data/simple_app'){
 					dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'DPCheck'
 				}
 			}
