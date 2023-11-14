@@ -38,7 +38,9 @@ pipeline {
                 }
             }
             steps {
-                sh 'echo \'Regression test\''
+                dir('jenkins-data/simple_app'){
+                    sh 'echo \'Regression test\''
+                }
             }
         }
     }
