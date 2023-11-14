@@ -1,47 +1,65 @@
-pipeline {
-    agent none
-    stages {
-        stage('Build') { 
-            agent {
-                docker {
-                    image 'node:20.9.0-alpine3.18' 
-                    args '-p 3000:3000' 
-                }
-            }
-            steps {
-                dir('jenkins-data/simple_app'){
-                    sh 'npm install' 
-                }
+// pipeline {
+//     agent none
+//     stages {
+//         stage('Build') { 
+//             agent {
+//                 docker {
+//                     image 'node:20.9.0-alpine3.18' 
+//                     args '-p 3000:3000' 
+//                 }
+//             }
+//             steps {
+//                 dir('jenkins-data/simple_app'){
+//                     sh 'npm install' 
+//                 }
                 
-            }
-        }
+//             }
+//         }
 
-        stage("Unit Test") {
-            agent {
-                docker {
-                    image 'node:20.9.0-alpine3.18' 
-                    args '-p 3000:3000' 
-                }
-            }
-            steps {
-                dir('jenkins-data/simple_app'){
-                    sh 'npm test'
-                }
-            }
-        }
+//         stage("Unit Test") {
+//             agent {
+//                 docker {
+//                     image 'node:20.9.0-alpine3.18' 
+//                     args '-p 3000:3000' 
+//                 }
+//             }
+//             steps {
+//                 dir('jenkins-data/simple_app'){
+//                     sh 'npm test'
+//                 }
+//             }
+//         }
 
-        stage("Regression Test") {
-            agent {
-                docker {
-                    image 'node:20.9.0-alpine3.18' 
-                    args '-p 3000:3000' 
-                }
-            }
-            steps {
-                dir('jenkins-data/simple_app'){
-                    sh 'echo \'Regression test\''
-                }
-            }
-        }
-    }
+//         stage("Regression Test") {
+//             agent {
+//                 docker {
+//                     image 'node:20.9.0-alpine3.18' 
+//                     args '-p 3000:3000' 
+//                 }
+//             }
+//             steps {
+//                 dir('jenkins-data/simple_app'){
+//                     sh 'echo \'Regression test\''
+//                 }
+//             }
+//         }
+//     }
+// }
+pipeline {
+	agent any
+	stages {
+
+		stage('OWASP DependencyCheck') {
+			steps {
+				dir('jenkins-data/JemkinsDependencyCheckTest'){
+					dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'DPCheck'
+				}
+			}
+		}
+	}	
+	post {
+		success {
+			dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+		}
+	}
 }
